@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Store Working</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        :root { --bg: #050505; --card: #121212; --accent: #ff0055; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; }
+
+        /* Окно корзины */
+        #cart-modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 999;
+            justify-content: center; align-items: center;
+        }
+        .modal-content { background: #1a1a1a; width: 400px; padding: 30px; border-radius: 20px; border: 1px solid #333; }
+        .cart-item { display: flex; justify-content: space-between; background: #222; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .del-btn { color: #ff0055; background: none; border: 1px solid #ff0055; cursor: pointer; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <!-- ОКНО КОРЗИНЫ -->
+    <div id="cart-modal">
+        <div class="modal-content">
+            <h2>Корзина</h2>
+            <div id="cart-items-list"></div>
+            <hr style="border: 0.5px solid #333; margin: 20px 0;">
+            <p>Итого: <span id="total-price">0</span> ₽</p>
+            <button onclick="toggleCart()" style="width:100%; padding: 10px; cursor:pointer;">Закрыть</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">DARK<span>Снюс</span></div>
+        <button class="cart-btn" onclick="toggleCart()">Товаров: <span id="count">0</span></button>
+    </header>
+
+    <div class="container">
+        <div class="product-card">
+            <div class="product-img" style="background: url('https://media.discordapp.net/attachments/973147661660209222/1446966809864437960/image.png?ex=69c6449a&is=69c4f31a&hm=9ca594d6dcf0af639b331c03a68b2cd1f5cf3d7f522ef5e33b480fa720dd7e36&=&format=webp&quality=lossless') center/cover;"></div>
+            <div class="product-info">
+                <h3>Сладкий малыш</h3>
+                <p class="price">5000 ₽</p>
+                <button class="buy-btn" onclick="addToCart('Сладкий малыш', 5000)">Купить</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-img" style="background: url('https://media.discordapp.net/attachments/973147661660209222/1446983071176982559/image.png?ex=69c653bf&is=69c5023f&hm=ccd8842834700eafd40a34b4003de47791c4bcd0d90955985df773d24fef1405&=&format=webp&quality=lossless') center/cover;"></div>
+            <div class="product-info">
+                <h3>люблю тебя </h3>
+                <p class="price">3000 ₽</p>
+                <button class="buy-btn" onclick="addToCart('Шлюха', 3000)">Купить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        // Функция открытия и закрытия
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            // Переключаем display между none и flex
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            } else {
+                modal.style.display = 'flex';
+                renderCart(); // Обновляем список при открытии
+            }
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price, id: Date.now() });
+            document.getElementById('count').innerText = cart.length;
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            document.getElementById('count').innerText = cart.length;
+            renderCart();
+        }
+
+        function renderCart() {
+            const list = document.getElementById('cart-items-list');
+            const total = document.getElementById('total-price');
+            list.innerHTML = '';
+            let sum = 0;
+
+            cart.forEach(item => {
+                sum += item.price;
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <span>${item.price} ₽ 
+                            <button class="del-btn" onclick="removeFromCart(${item.id})">×</button>
+                        </span>
+                    </div>
+                `;
+            });
+            total.innerText = sum;
+        }
+    </script>
+</body>
+</html>
