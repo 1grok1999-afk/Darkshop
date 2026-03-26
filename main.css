@@ -1,4 +1,10 @@
 /* Общие настройки */
+:root {
+    --bg: #050505;
+    --card: #121212;
+    --accent: #ff0055;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,7 +12,7 @@
 }
 
 body {
-    background-color: #0a0a0a;
+    background-color: var(--bg);
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
@@ -112,7 +118,6 @@ header {
 
 /* Корзина */
 #cart-modal {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -120,8 +125,17 @@ header {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     z-index: 999;
+    display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+#cart-modal.active {
+    opacity: 1;
+    visibility: visible;
 }
 
 .modal-content {
@@ -155,6 +169,29 @@ header {
 .del-btn:hover {
     background: #ff0055;
     color: #fff;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    background: #ff0055;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+.modal-content button:hover {
+    background: #ff1a66;
+}
+
+.cart-divider {
+    border: 0;
+    border-top: 0.5px solid #333;
+    margin: 20px 0;
 }
 
 @media (max-width: 600px) {
